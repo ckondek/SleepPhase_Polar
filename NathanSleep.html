@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>SleepCharts</title>
+  <style>
+.LIGHT {background-color:blue;}
+.DEEP {background-color: darkgrey;}
+.REM {background-color: darkred;}
+.TRACKING_STOPPED {background-color: teal;}
+.ALARM_DISMISS {background-color: green;}
+.ALARM_SNOOZE {background-color: lightgreen;}
+.ALARM_STARTED {background-color: orange;}
+.phase {color: white;}
+
+</style>
+</head>
+<body>
+
+</head>
+<body>
+    <script src="./d3.js"></script>
+    <script>
+    function draw(data){
+            var selector = d3.select('body')
+
+                            .selectAll('div')
+
+                            .data(data);
+
+            var divEnter  = selector.enter()
+                                .append('div')
+                                    .attr('class','row')
+                                .style('height','30px')
+                                .style('margin-bottom','20px')
+                                    .append('div')
+                                        .attr('class','entry')
+                                .style('display','inline-block');
+
+            divEnter.each(function(d){
+                            for(var i  = 0; i < d.phases.length; i++){
+                                d3.select(this).append("div")
+                                        .attr('class',function(d){return d.phases[i][3];})
+                                        .classed('phase',true)
+
+                                    .style("display","inline")
+                                    .style("float","left")
+                                    .style('margin-left','3px')
+                                    .style('margin-bottom', '2px')
+                                    .style('border','1px solid black')
+
+                                    .style('width',function(d){return (d.phases[i][2]*2)+"px"})
+                                    .text(function(d){
+
+                                        return d.phases[i][3][0];
+                                    })
+                                    .style("font-family", "Verdana")
+                                    .style('font-size','0.2em');
+                                }
+                        });
+        }
+        </script>
+        <script>
+            d3.json("./sleep.json", draw);
+        </script>
+</body>
+</html>
